@@ -1,0 +1,29 @@
+@prefix doc:   <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+
+# ════════════════════════════════════════════════════════════════════════════
+# ALIGNMENT: UD Document ontology  <->  DCMI Metadata Terms
+#
+# Generic descriptive metadata understood by most catalogues and archival
+#     tools, complementing RiC-O and PROV-O:
+#   - the depicted period of a reference is its temporal coverage
+#     (dct:temporal), the "depiction time" of the DocGraph dual timeline;
+#   - titles, tags and media URIs map to dct:title, dct:subject and
+#     dct:identifier.
+#
+# Complements the published CityGML3-DCMI alignment, which declares
+#     doc:Reference.referenceText ≡ dct:bibliographicCitation and relates
+#     doc:Document to dct:BibliographicResource. No mapping here overlaps it.
+# ════════════════════════════════════════════════════════════════════════════
+
+<https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/alignment/citygml3-dcterms.ttl>
+    a owl:Ontology ;
+    rdfs:label "Alignment of the UD Document ontology with DCMI Metadata Terms"@en ;
+    rdfs:seeAlso <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Alignments/CityGML3-DCMI.ttl> .
+
+doc:Reference.coveragePeriod rdfs:subPropertyOf dct:temporal .
+doc:Document.title           rdfs:subPropertyOf dct:title .
+doc:Document.tag             rdfs:subPropertyOf dct:subject .
+doc:Document.uri             rdfs:subPropertyOf dct:identifier .

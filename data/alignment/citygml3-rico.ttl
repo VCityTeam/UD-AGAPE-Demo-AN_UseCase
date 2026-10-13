@@ -1,0 +1,105 @@
+@prefix bldg:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building#> .
+@prefix core:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core#> .
+@prefix doc:   <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#> .
+@prefix rico:  <https://www.ica.org/standards/RiC/ontology#> .
+@prefix align: <https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/alignment/citygml3-rico.ttl#> .
+@prefix geo:   <http://www.opengis.net/ont/geosparql#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+
+# ════════════════════════════════════════════════════════════════════════════
+# ALIGNMENT: CityGML 3.0 (CityRDF) + UD Document ontology  <->  RiC-O 1.1
+#
+# The Document ontology (DocGraph, 3DGeoInfo 2026) is left untouched:
+#   - doc:Document stays a core:AbstractFeatureWithLifespan (R1);
+#   - doc:Reference stays the authoritative, qualified link between a
+#     document state and an urban feature (R3–R5). It is aligned with the
+#     RiC-O n-ary rico:Relation, so its interpretation, purpose, coverage
+#     period and assertion date are all kept on the RiC side.
+#
+# Only axioms that are safe for every instance live here. Mappings that need
+# new nodes or depend on context are SPARQL Update rules in ./rules/.
+#
+# Places: a rico:Place is a persistent, named place; CityGML features are
+#     linked to it with rico:hasOrHadLocation, never declared equivalent.
+# ════════════════════════════════════════════════════════════════════════════
+
+<https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/alignment/citygml3-rico.ttl>
+    a owl:Ontology ;
+    rdfs:label "Alignment of CityGML 3.0 / UD Document ontology with RiC-O 1.1"@en ;
+    dct:description "Class and property correspondences between CityRDF, the UD Document ontology and Records in Contexts (RiC-O 1.1)."@en ;
+    owl:imports
+        <https://www.ica.org/standards/RiC/ontology/1.1> ;
+    rdfs:seeAlso <https://www.ica.org/standards/RiC/RiC-O_1-1.html> .
+
+# ────────────────────────────────────────────────────────────────────────────
+# References: doc:Reference is a RiC n-ary relation
+#
+#   doc:Document ──doc:Document.referringTo──▶ doc:Reference ──doc:Reference.referringTo──▶ feature
+#   (source)        rico:thingIsSourceOfRelation  (rico:Relation)  rico:relationHasTarget     (target)
+#
+# The coverage period and the assertion date are both attached as
+#     rico:relationHasDate, distinguished by rico:hasDateType (rules/02).
+# ────────────────────────────────────────────────────────────────────────────
+
+doc:Reference rdfs:subClassOf rico:Relation .
+
+doc:Document.referringTo  rdfs:subPropertyOf rico:thingIsSourceOfRelation .
+doc:Reference.referringTo rdfs:subPropertyOf rico:relationHasTarget .
+doc:Reference.referenceText rdfs:subPropertyOf rico:generalDescription .
+
+# Purpose types are SKOS concepts qualifying the reference;
+#     rico:Type is a subclass of rico:Concept.
+doc:Reference.purposeType rdfs:subPropertyOf rico:hasOrHadType .
+
+# The two dates of a reference (R4: dual timeline)
+align:dateType_coveragePeriod a owl:NamedIndividual, rico:DateType ;
+    rico:name "Coverage period"@en , "Période représentée"@fr ;
+    rdfs:comment "Period of the city state depicted by the document (doc:Reference.coveragePeriod)."@en .
+
+align:dateType_assertion a owl:NamedIndividual, rico:DateType ;
+    rico:name "Assertion date"@en , "Date d'assertion"@fr ;
+    rdfs:comment "Date on which the reference was asserted: curation, digitisation, alignment or annotation (doc:Reference.referringDate)."@en .
+
+# ────────────────────────────────────────────────────────────────────────────
+# Documents (documentation-level correspondences)
+#
+# DocGraph treats doc:Document as a principal urban feature with a stable
+#     identity, whose successive states (scan, restoration, annotation) form
+#     its documentary history. RiC splits these two aspects:
+#       stable documentary identity   -> rico:Record          (rules/01)
+#       each document state / file    -> rico:Instantiation   (rules/01)
+#     so no OWL axiom is asserted on doc:Document itself.
+# ────────────────────────────────────────────────────────────────────────────
+
+doc:Document skos:relatedMatch rico:Record , rico:Instantiation .
+doc:Tag      skos:relatedMatch rico:Concept .
+
+# The media URI identifies one document state (one instantiation)
+doc:Document.uri rdfs:subPropertyOf rico:identifier .
+
+# Purpose-type values are SKOS concepts (doc:PurposeTypeValue ⊑ skos:Concept)
+#     that type a reference: RiC-O types (rico:Type ⊑ rico:Concept).
+doc:PurposeTypeValue rdfs:subClassOf rico:Type .
+
+# Document versioning classes (declared by both CityOWL document modules in
+#     ontologies/CityOWL; no properties yet). A documentable version
+#     corresponds to one document state; a transition to the derivation
+#     between two states (see citygml3-prov.ttl).
+doc:DocumentableVersion           skos:relatedMatch rico:Instantiation .
+doc:DocumentableVersionTransition skos:relatedMatch rico:DerivationRelation .
+
+# ────────────────────────────────────────────────────────────────────────────
+# Places and city objects (documentation-level correspondences)
+#
+# A building is located at a place; it is not itself a place. The lifespan
+#     of city objects stays on the CityGML side:
+#     core:AbstractFeatureWithLifespan.creationDate is deliberately not
+#     mapped to a RiC date property.
+# ────────────────────────────────────────────────────────────────────────────
+
+core:AbstractCityObject skos:relatedMatch rico:Place .
+bldg:Building           skos:relatedMatch rico:Place .
+geo:Feature             skos:relatedMatch rico:PhysicalLocation .

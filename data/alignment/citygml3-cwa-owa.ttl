@@ -1,0 +1,41 @@
+@prefix bldg:    <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building#> .
+@prefix con:     <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/construction#> .
+@prefix core:    <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core#> .
+@prefix owacon:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/OWA/3.0/construction#> .
+@prefix owabldg: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/OWA/3.0/building#> .
+@prefix owacore: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/OWA/3.0/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ════════════════════════════════════════════════════════════════════════════
+# BRIDGE: CityOWL CWA 3.0 terms used by the data  ->  CityOWL OWA 3.0
+#
+# The Gratte-Ciel data and geometry (../gratteciel/) use the CityOWL CWA 3.0
+#     vocabulary. To work with the open-world network instead, load this
+#     bridge with the OWA modules and WITHOUT the CWA modules: it states that
+#     the CWA terms used by the data are the same as their OWA counterparts,
+#     so the data is read with OWA semantics (domains and ranges, no
+#     restrictions).
+#
+# Never load it together with the CWA network: the CWA restrictions would
+#     then apply to the OWA classes.
+#
+# Only the terms used by the data and the alignment are bridged.
+# ════════════════════════════════════════════════════════════════════════════
+
+<https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/alignment/citygml3-cwa-owa.ttl>
+    a owl:Ontology ;
+    rdfs:label "Bridge from the CityOWL CWA 3.0 terms used by the data to CityOWL OWA 3.0"@en .
+
+core:AbstractFeatureWithLifespan owl:equivalentClass owacore:AbstractFeatureWithLifespan .
+core:AbstractCityObject          owl:equivalentClass owacore:AbstractCityObject .
+bldg:Building                    owl:equivalentClass owabldg:Building .
+bldg:BuildingPart                owl:equivalentClass owabldg:BuildingPart .
+con:RoofSurface                  owl:equivalentClass owacon:RoofSurface .
+con:WallSurface                  owl:equivalentClass owacon:WallSurface .
+
+core:AbstractFeatureWithLifespan.creationDate    owl:equivalentProperty owacore:AbstractFeatureWithLifespan.creationDate .
+core:AbstractFeatureWithLifespan.terminationDate owl:equivalentProperty owacore:AbstractFeatureWithLifespan.terminationDate .
+core:AbstractSpace.boundary                      owl:equivalentProperty owacore:AbstractSpace.boundary .
+core:AbstractThematicSurface.lod2MultiSurface    owl:equivalentProperty owacore:AbstractThematicSurface.lod2MultiSurface .
+bldg:Building.buildingPart                       owl:equivalentProperty owabldg:Building.buildingPart .

@@ -1,0 +1,48 @@
+@prefix doc:   <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix vers:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/versioning#> .
+
+# ════════════════════════════════════════════════════════════════════════════
+# ALIGNMENT: UD Document ontology  <->  PROV-O
+#
+# Complements citygml3-rico.ttl where RiC-O is not the right tool:
+#     provenance of documentary states and of the references themselves.
+#
+#   - Document states are prov:Entity; their version chain already uses
+#     prov:wasRevisionOf (⊑ prov:wasDerivedFrom).
+#   - A doc:Reference is an asserted statement, i.e. a prov:Entity generated
+#     at its referringDate. Who or what asserted it (curator, annotation
+#     tool, language model) is recorded with prov:wasAttributedTo /
+#     prov:wasGeneratedBy, which keeps references auditable (DocGraph R3–R4).
+#   - Each revision between two document states is backed by a
+#     prov:Activity (digitisation, restoration, annotation...) minted by
+#     rules/05-provenance.ru, to which agents and types can be attached.
+# ════════════════════════════════════════════════════════════════════════════
+
+<https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/alignment/citygml3-prov.ttl>
+    a owl:Ontology ;
+    rdfs:label "Alignment of the UD Document ontology with PROV-O"@en ;
+    dct:description "Provenance correspondences for document states and references."@en ;
+    owl:imports <http://www.w3.org/ns/prov-o> .
+
+# Document states and references are provenance entities
+doc:Document  rdfs:subClassOf prov:Entity .
+doc:Reference rdfs:subClassOf prov:Entity .
+
+# The assertion date of a reference is its generation time
+doc:Reference.referringDate rdfs:subPropertyOf prov:generatedAtTime .
+
+# A transition between two documentable versions is the activity that
+#     derived one state from the other (minted per revision by rules/05).
+doc:DocumentableVersionTransition skos:relatedMatch prov:Activity .
+
+# City side of the dual versioning (CityOWL CWA versioning module): a
+#     version transition, through its transactions, replaces old features by
+#     new ones. It is the city-model counterpart of a document revision and
+#     stays on the CityGML side; the correspondence is documented only.
+vers:VersionTransition skos:relatedMatch prov:Activity .
+vers:Transaction       skos:relatedMatch prov:Activity .

@@ -1,0 +1,101 @@
+@prefix bldg:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building#> .
+@prefix core:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core#> .
+@prefix data:  <https://raw.githubusercontent.com/VCityTeam/UD-Graph/master/Datasets/GratteCiel_2018_split_v3#> .
+@prefix rico:  <https://www.ica.org/standards/RiC/ontology#> .
+@prefix geo:   <http://www.opengis.net/ont/geosparql#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+# ════════════════════════════════════════════════════════════════════════════
+# PLACE AUTHORITY for the Gratte-Ciel data (RiC-O 1.1)
+#
+# Hand-curated rico:Place individuals, and the links from CityGML features
+#     to them. This is the only file in the alignment that asserts
+#     dataset-specific knowledge; everything else is generic.
+#
+#   Villeurbanne (commune, INSEE 69266)
+#     └── Cité des Gratte-Ciel (district)
+#           ◀── data:GratteCielDistrict, the four buildings, their parts
+#               and surfaces                         (rico:hasOrHadLocation)
+#
+# Buildings and their components are not places: they remain CityGML
+#     features (and reference targets). Only named areas are rico:Place.
+# ════════════════════════════════════════════════════════════════════════════
+
+# ── Place types ─────────────────────────────────────────────────────────────
+
+data:placeType_commune a owl:NamedIndividual, rico:PlaceType ;
+    rico:name "Commune"@fr , "Municipality"@en .
+
+data:placeType_district a owl:NamedIndividual, rico:PlaceType ;
+    rico:name "Quartier"@fr , "District"@en .
+
+# ── Commune ─────────────────────────────────────────────────────────────────
+
+data:place_villeurbanne a owl:NamedIndividual, rico:Place ;
+    rico:hasOrHadPlaceName data:placeName_villeurbanne ;
+    rico:hasOrHadPlaceType data:placeType_commune ;
+    rico:identifier "69266" ;
+    rdfs:comment "INSEE commune code 69266, the prefix shared by every building identifier in the CityGML dataset."@en ;
+    rico:containsOrContained data:place_gratteCiel .
+
+data:placeName_villeurbanne a owl:NamedIndividual, rico:PlaceName ;
+    rico:textualValue "Villeurbanne" .
+
+# ── District ────────────────────────────────────────────────────────────────
+#
+# Coordinates are the WGS84 centroid of the LoD2 roof geometry of the four
+#     modelled buildings BU_69266BO56_0 … _3 (EPSG:3946 posList vertices of
+#     the UD-Graph dataset GratteCiel_2018_split_v3, reprojected to
+#     EPSG:4326), not a surveyed district centroid.
+
+data:place_gratteCiel a owl:NamedIndividual, rico:Place, geo:Feature ;
+    rico:hasOrHadPlaceName data:placeName_gratteCiel ;
+    rico:hasOrHadPlaceType data:placeType_district ;
+    rico:hasBeginningDate data:date_1930_1931 ;
+    rico:isOrWasContainedBy data:place_villeurbanne ;
+    rico:hasOrHadPhysicalLocation data:physicalLocation_gratteCiel ;
+    geo:hasGeometry data:geometry_gratteCiel .
+
+data:placeName_gratteCiel a owl:NamedIndividual, rico:PlaceName ;
+    rico:textualValue "Cité des Gratte-Ciel"@fr .
+
+# Dating of the Cité des Gratte-Ciel in its Mérimée record (ACR0000160)
+data:date_1930_1931 a owl:NamedIndividual, rico:Date ;
+    rico:normalizedDateValue "1930/1931" ;
+    rico:expressedDate "1930 ; 1931" .
+
+data:physicalLocation_gratteCiel a owl:NamedIndividual, rico:PhysicalLocation ;
+    rico:hasOrHadCoordinates data:coordinates_gratteCiel .
+
+data:coordinates_gratteCiel a owl:NamedIndividual, rico:Coordinates ;
+    rico:latitude  "45.76816"^^xsd:decimal ;
+    rico:longitude "4.87959"^^xsd:decimal ;
+    rico:geodesicSystem "WGS84" .
+
+# Same point for GeoSPARQL, so places can be queried spatially alongside the
+#     CityRDF geometry (WKT without CRS IRI = CRS84, longitude first).
+data:geometry_gratteCiel a owl:NamedIndividual, geo:Geometry ;
+    geo:asWKT "POINT(4.87959 45.76816)"^^geo:wktLiteral .
+
+# ════════════════════════════════════════════════════════════════════════════
+# CITYGML FEATURES -> PLACES
+#
+# Several CityGML features (and, over time, several versions of them) can
+#     point to the same persistent place. BuildingParts and boundary surfaces
+#     inherit their building's location through rules/03.
+# ════════════════════════════════════════════════════════════════════════════
+
+data:GratteCielDistrict rico:hasOrHadLocation data:place_gratteCiel .
+
+data:BU_69266BO56_0 rico:hasOrHadLocation data:place_gratteCiel .
+data:BU_69266BO56_1 rico:hasOrHadLocation data:place_gratteCiel .
+data:BU_69266BO56_2 rico:hasOrHadLocation data:place_gratteCiel .
+data:BU_69266BO56_3 rico:hasOrHadLocation data:place_gratteCiel .
+
+# The town hall is part of the Cité des Gratte-Ciel: "Il fait partie de
+#     l'ensemble des immeubles dits la Cité des Gratte-ciel" (Mérimée
+#     PA00118150). Identified in the 3D city model as the building whose
+#     footprint contains the record's coordinates.
+data:BU_69266BO55_0 rico:hasOrHadLocation data:place_gratteCiel .
