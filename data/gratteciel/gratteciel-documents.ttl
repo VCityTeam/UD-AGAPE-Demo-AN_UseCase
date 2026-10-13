@@ -1,0 +1,594 @@
+@prefix core:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core#> .
+@prefix bldg:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building#> .
+@prefix doc:   <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix data:  <https://raw.githubusercontent.com/VCityTeam/UD-Graph/master/Datasets/GratteCiel_2018_split_v3#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix con:   <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/construction#> .
+@prefix rico:  <https://www.ica.org/standards/RiC/ontology#> .
+
+# Gratte-Ciel (Villeurbanne) city objects and the documents that describe
+#     them, expressed with CityOWL CWA 3.0 (ontologies/CityOWL/CWA/3.0/) and
+#     its Document module.
+#
+# City objects: the individual IRIs (data:) are those of the Gratte-Ciel 3D
+#     city model (UD-Graph dataset GratteCiel_2018_split_v3), so documents
+#     remain linkable to its LoD2 geometry.
+#
+# Documents: every document, URL, title, author, licence and date comes
+#     from its source, checked on 2026-10-12:
+#     - Wikimedia Commons file pages and their metadata;
+#     - Numelyo, digital library of the Bibliothèque municipale de Lyon;
+#     - POP, heritage platform of the French Ministry of Culture (Mérimée).
+#     References (doc:Reference) are this dataset's own annotations; their
+#     assertion dates are the dates those annotations were made.
+
+<https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/gratteciel/gratteciel-documents.ttl>
+    a owl:Ontology ;
+    owl:imports
+        <http://www.w3.org/2004/02/skos/core> ,
+        <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core> ,
+        <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building> ,
+        <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document> .
+
+# ════════════════════════════════════════════════════════════════════════════
+# PURPOSE-TYPE VOCABULARY
+# ════════════════════════════════════════════════════════════════════════════
+
+data:purposeTypeScheme a owl:NamedIndividual, skos:ConceptScheme ;
+    skos:prefLabel "Document Purpose Types"@en .
+
+data:purposeType_aerialView a owl:NamedIndividual, doc:PurposeTypeValue ;
+    skos:prefLabel "Aerial View"@en , "Vue aérienne"@fr ;
+    skos:inScheme data:purposeTypeScheme .
+
+data:purposeType_constructionPhotograph a owl:NamedIndividual, doc:PurposeTypeValue ;
+    skos:prefLabel "Construction Photograph"@en , "Photographie de chantier"@fr ;
+    skos:inScheme data:purposeTypeScheme .
+
+data:purposeType_heritageRecord a owl:NamedIndividual, doc:PurposeTypeValue ;
+    skos:prefLabel "Heritage Inventory Record"@en , "Notice d'inventaire patrimonial"@fr ;
+    skos:inScheme data:purposeTypeScheme .
+
+data:purposeType_streetView a owl:NamedIndividual, doc:PurposeTypeValue ;
+    skos:prefLabel "Street View"@en , "Vue depuis la rue"@fr ;
+    skos:inScheme data:purposeTypeScheme .
+
+data:purposeType_architecturalDrawing a owl:NamedIndividual, doc:PurposeTypeValue ;
+    skos:prefLabel "Architectural Drawing"@en , "Dessin d'architecture"@fr ;
+    skos:inScheme data:purposeTypeScheme .
+
+data:purposeType_interiorView a owl:NamedIndividual, doc:PurposeTypeValue ;
+    skos:prefLabel "Interior View"@en , "Vue intérieure"@fr ;
+    skos:inScheme data:purposeTypeScheme .
+
+# ════════════════════════════════════════════════════════════════════════════
+# TAG INDIVIDUALS (doc:Tag)
+# doc:Tag.count = number of documents carrying the tag.
+# ════════════════════════════════════════════════════════════════════════════
+
+data:tag_gratteCiel a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Gratte-ciel"@fr ;
+    doc:Tag.count 4 .
+
+data:tag_villeurbanne a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Villeurbanne"@fr ;
+    doc:Tag.count 10 .
+
+data:tag_aerialView a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Aerial view"@en ;
+    doc:Tag.count 1 .
+
+data:tag_construction a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Construction"@en ;
+    doc:Tag.count 1 .
+
+data:tag_heritage a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Heritage"@en ;
+    doc:Tag.count 2 .
+
+data:tag_streetView a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Street view"@en ;
+    doc:Tag.count 4 .
+
+data:tag_townHall a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Hôtel de ville"@fr ;
+    doc:Tag.count 6 .
+
+data:tag_architecturalDrawing a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Architectural drawing"@en ;
+    doc:Tag.count 1 .
+
+data:tag_interior a owl:NamedIndividual, doc:Tag ;
+    doc:Tag.text "Interior"@en ;
+    doc:Tag.count 1 .
+
+# ════════════════════════════════════════════════════════════════════════════
+# CITY OBJECTS (CityOWL CWA 3.0)
+#
+# The district is dated from the Mérimée record of the Cité des Gratte-Ciel
+#     (ACR0000160, dating "1930 ; 1931"). No per-building dates are given:
+#     the sources do not date the buildings individually.
+# ════════════════════════════════════════════════════════════════════════════
+
+# District scale
+data:GratteCielDistrict a owl:NamedIndividual, core:AbstractFeatureWithLifespan ;
+    skos:prefLabel "Cité des Gratte-Ciel district"@en ,
+                   "Cité des Gratte-Ciel"@fr ;
+    core:AbstractFeatureWithLifespan.creationDate "1930-01-01T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Year only: the Mérimée record ACR0000160 dates the Cité des Gratte-Ciel 1930–1931."@en ;
+    rdfs:seeAlso "https://pop.culture.gouv.fr/notice/merimee/ACR0000160"^^xsd:anyURI .
+
+# The town hall (Hôtel de ville), part of the Cité des Gratte-Ciel according
+#     to its Mérimée record PA00118150: architect Robert Giroud, dated 1930,
+#     inaugurated in 1934, partially listed as a historic monument on
+#     29 April 1991 (façades and roofs among the protected parts).
+# Identified in the 3D city model as the building whose footprint contains
+#     the record's coordinates (45.76652 N, 4.87961 E); its 64 m height
+#     matches the belfry tower the record describes.
+data:BU_69266BO55_0 a owl:NamedIndividual, bldg:Building ;
+    skos:prefLabel "BU_69266BO55_0" ;
+    rdfs:label "Hôtel de ville de Villeurbanne"@fr , "Villeurbanne town hall"@en ;
+    core:AbstractFeatureWithLifespan.creationDate "1934-01-01T00:00:00"^^xsd:dateTime ;
+    rdfs:comment "Year only: inaugurated in 1934 according to the Mérimée record PA00118150, which dates the building 1930."@en ;
+    rdfs:seeAlso "https://pop.culture.gouv.fr/notice/merimee/PA00118150"^^xsd:anyURI ;
+    core:AbstractSpace.boundary data:RoofSurface_60, data:WallSurface_60 .
+
+# Surface scale: the town hall's LoD2 wall and roof surfaces, which the
+#     protection of its façades and roofs refers to
+data:WallSurface_60 a owl:NamedIndividual, con:WallSurface ;
+    skos:prefLabel "Façades de l'hôtel de ville (surface murale LoD2)"@fr , "Town hall façades (LoD2 wall surface)"@en .
+
+data:RoofSurface_60 a owl:NamedIndividual, con:RoofSurface ;
+    skos:prefLabel "Toitures de l'hôtel de ville (surface de toit LoD2)"@fr , "Town hall roofs (LoD2 roof surface)"@en .
+
+# Building scale, with their LoD2 roof and wall surfaces in the 3D model
+data:BU_69266BO56_0 a owl:NamedIndividual, bldg:Building ;
+    skos:prefLabel "BU_69266BO56_0" ;
+    core:AbstractSpace.boundary data:RoofSurface_165, data:WallSurface_165 .
+
+data:BU_69266BO56_1 a owl:NamedIndividual, bldg:Building ;
+    skos:prefLabel "BU_69266BO56_1" ;
+    core:AbstractSpace.boundary data:RoofSurface_166, data:WallSurface_166 .
+
+data:BU_69266BO56_2 a owl:NamedIndividual, bldg:Building ;
+    skos:prefLabel "BU_69266BO56_2" ;
+    core:AbstractSpace.boundary data:RoofSurface_167, data:WallSurface_167 .
+
+data:BU_69266BO56_3 a owl:NamedIndividual, bldg:Building ;
+    skos:prefLabel "BU_69266BO56_3" ;
+    core:AbstractSpace.boundary data:RoofSurface_168, data:WallSurface_168 .
+
+# ════════════════════════════════════════════════════════════════════════════
+# OWL-TIME INTERVALS: periods depicted or described by the documents
+# ════════════════════════════════════════════════════════════════════════════
+
+# The 1936 aerial photograph
+data:interval_1936 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_1936 ;
+    time:hasEnd       data:instant_1936 .
+
+data:instant_1936 a owl:NamedIndividual, time:Instant ;
+    time:inXSDgYear "1936"^^xsd:gYear .
+
+# The construction photograph of January 1932
+data:interval_1932_01 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_1932_01 ;
+    time:hasEnd       data:instant_1932_01 .
+
+data:instant_1932_01 a owl:NamedIndividual, time:Instant ;
+    time:inXSDgYearMonth "1932-01"^^xsd:gYearMonth .
+
+# The dating given by the Mérimée record (1930 ; 1931)
+data:interval_1930_1931 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_1930 ;
+    time:hasEnd       data:instant_1931 .
+
+data:instant_1930 a owl:NamedIndividual, time:Instant ;
+    time:inXSDgYear "1930"^^xsd:gYear .
+
+data:instant_1931 a owl:NamedIndividual, time:Instant ;
+    time:inXSDgYear "1931"^^xsd:gYear .
+
+# The street photograph of 28 December 2023
+data:interval_2023_12_28 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_2023_12_28 ;
+    time:hasEnd       data:instant_2023_12_28 .
+
+data:instant_2023_12_28 a owl:NamedIndividual, time:Instant ;
+    time:inXSDDate "2023-12-28"^^xsd:date .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 1: aerial view of the Cité des Gratte-Ciel, 1936
+#
+# Two states (prov:wasRevisionOf):
+#   document_1_original  the 1936 photograph, from the Centre du Rize
+#                        (Villeurbanne's memory and archives centre)
+#   document_1           its digitisation, dated 2020-03-11 15:47:26 by the
+#                        file's metadata, published on Wikimedia Commons on
+#                        2020-09-28 (CC BY-SA 4.0, credit: Centre du Rize)
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_1_original a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Vue aérienne de la cité des Gratte-Ciel en 1936"@fr ;
+    core:AbstractFeatureWithLifespan.creationDate "1936-01-01T00:00:00"^^xsd:dateTime ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_aerialView, data:tag_villeurbanne ;
+    dct:creator "Centre du Rize Villeurbanne" ;
+    rdfs:comment "Original 1936 photograph, from the Centre du Rize, Villeurbanne (source credited on Wikimedia Commons). Year only."@en .
+
+data:document_1 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Vue aérienne de la cité des Gratte-Ciel en 1936"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/a/a8/Vue_a%C3%A9rienne_de_la_cit%C3%A9_des_Gratte-Ciel_en_1936.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:Vue_a%C3%A9rienne_de_la_cit%C3%A9_des_Gratte-Ciel_en_1936.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2020-03-11T15:47:26"^^xsd:dateTime ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_aerialView, data:tag_villeurbanne ;
+    prov:wasRevisionOf data:document_1_original ;
+    dct:creator "Centre du Rize Villeurbanne" ;
+    dct:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    dct:issued "2020-09-28T19:27:42Z"^^xsd:dateTime ;
+    rdfs:comment "Digitised photograph; creation date from the file metadata, issued date of its upload to Wikimedia Commons."@en ;
+    doc:Document.referringTo
+        data:reference_1 ,
+        data:reference_2 ,
+        data:reference_3 ,
+        data:reference_4 ,
+        data:reference_5 .
+
+# References 1–4: one per building, as in the DocGraph case study
+#     (assertion date of that study: 2020-03-11 15:47:26)
+data:reference_1 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2020-03-11T15:47:26"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1936 ;
+    doc:Reference.purposeType      data:purposeType_aerialView ;
+    doc:Reference.referenceText    "Vue aérienne de la cité des Gratte-Ciel en 1936" ;
+    doc:Reference.referringTo      data:BU_69266BO56_0 .
+
+data:reference_2 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2020-03-11T15:47:26"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1936 ;
+    doc:Reference.purposeType      data:purposeType_aerialView ;
+    doc:Reference.referenceText    "Vue aérienne de la cité des Gratte-Ciel en 1936" ;
+    doc:Reference.referringTo      data:BU_69266BO56_1 .
+
+data:reference_3 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2020-03-11T15:47:26"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1936 ;
+    doc:Reference.purposeType      data:purposeType_aerialView ;
+    doc:Reference.referenceText    "Vue aérienne de la cité des Gratte-Ciel en 1936" ;
+    doc:Reference.referringTo      data:BU_69266BO56_2 .
+
+data:reference_4 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2020-03-11T15:47:26"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1936 ;
+    doc:Reference.purposeType      data:purposeType_aerialView ;
+    doc:Reference.referenceText    "Vue aérienne de la cité des Gratte-Ciel en 1936" ;
+    doc:Reference.referringTo      data:BU_69266BO56_3 .
+
+# Reference 5: district scale, added later (2026-10-12), so the document's
+#     interpretation layer evolves after the building-level references
+data:reference_5 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-12T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1936 ;
+    doc:Reference.purposeType      data:purposeType_aerialView ;
+    doc:Reference.referenceText    "The aerial photograph shows the whole Cité des Gratte-Ciel as built by 1936" ;
+    doc:Reference.referringTo      data:GratteCielDistrict .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 2: construction of the steel frame, January 1932 (Jules Sylvestre)
+#
+# Three states (prov:wasRevisionOf):
+#   document_2_original  the photograph, January 1932, by Jules Sylvestre
+#   document_2_numelyo   its record in Numelyo, the digital library of the
+#                        Bibliothèque municipale de Lyon (BML_01ICO001014cd177ad8ced7)
+#   document_2           its copy on Wikimedia Commons, uploaded 2025-02-22
+#                        (public domain)
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_2_original a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Montage de la charpente des Gratte-Ciel de Villeurbanne en janvier 1932"@fr ;
+    core:AbstractFeatureWithLifespan.creationDate "1932-01-01T00:00:00"^^xsd:dateTime ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_construction, data:tag_villeurbanne ;
+    dct:creator "Jules Sylvestre" ;
+    rdfs:comment "Original photograph, January 1932 (month only)."@en .
+
+data:document_2_numelyo a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Montage de la charpente des Gratte-Ciel de Villeurbanne en janvier 1932"@fr ;
+    doc:Document.uri "https://numelyo.bm-lyon.fr/BML:BML_01ICO001014cd177ad8ced7"^^xsd:anyURI ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_construction, data:tag_villeurbanne ;
+    prov:wasRevisionOf data:document_2_original ;
+    dct:creator "Jules Sylvestre" ;
+    dct:publisher "Bibliothèque municipale de Lyon (Numelyo)" ;
+    rdfs:comment "Digitised photograph in Numelyo, the digital library of the Bibliothèque municipale de Lyon; digitisation date not given by the source."@en .
+
+data:document_2 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Montage de la charpente des GratteCiel de Villeurbanne en janvier 1932"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/e/ec/Montage_de_la_charpente_des_GratteCiel_de_Villeurbanne_en_janvier_1932.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:Montage_de_la_charpente_des_GratteCiel_de_Villeurbanne_en_janvier_1932.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2025-02-22T13:16:35"^^xsd:dateTime ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_construction, data:tag_villeurbanne ;
+    prov:wasRevisionOf data:document_2_numelyo ;
+    dct:creator "Jules Sylvestre" ;
+    dct:license <https://creativecommons.org/publicdomain/mark/1.0/> ;
+    rdfs:comment "Copy on Wikimedia Commons of the Numelyo record; creation date of the upload."@en ;
+    doc:Document.referringTo data:reference_6 .
+
+data:reference_6 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-12T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1932_01 ;
+    doc:Reference.purposeType      data:purposeType_constructionPhotograph ;
+    doc:Reference.referenceText    "Photographie d'immeubles en cours de construction dans le cadre du projet des Gratte-Ciel de Villeurbanne." ;
+    doc:Reference.referringTo      data:GratteCielDistrict .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 3: heritage inventory record of the Cité des Gratte-Ciel
+#     (Mérimée ACR0000160, label "Architecture contemporaine remarquable"
+#     since 2003; online since 2020-08-04)
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_3 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Cité, dite les Gratte-ciel (théâtre national populaire, HBM de JM Pin, Gratte-ciel de Leroux)"@fr ;
+    doc:Document.uri "https://pop.culture.gouv.fr/notice/merimee/ACR0000160"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2020-08-04T00:00:00"^^xsd:dateTime ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_heritage, data:tag_villeurbanne ;
+    dct:publisher "Ministère de la Culture (POP, base Mérimée)" ;
+    rdfs:comment "Record ACR0000160 of the Mérimée database: label Architecture contemporaine remarquable (2003); architects Môrice Leroux and Henri Chambon; dated 1930 ; 1931. Creation date: date the record was put online."@en ;
+    doc:Document.referringTo data:reference_7 .
+
+data:reference_7 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-12T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1930_1931 ;
+    doc:Reference.purposeType      data:purposeType_heritageRecord ;
+    doc:Reference.referenceText    "Cité, dite les Gratte-ciel; label Architecture contemporaine remarquable (2003)" ;
+    doc:Reference.referringTo      data:GratteCielDistrict .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 4: the towers on avenue Henri-Barbusse, 28 December 2023
+#     (Wikimedia Commons, CC BY-SA 4.0)
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_4 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Tours Gratte Ciel Avenue Henri Barbusse - Villeurbanne (FR69) - 2023-12-28 - 1"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/3/37/Tours_Gratte_Ciel_Avenue_Henri_Barbusse_-_Villeurbanne_%28FR69%29_-_2023-12-28_-_1.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:Tours_Gratte_Ciel_Avenue_Henri_Barbusse_-_Villeurbanne_(FR69)_-_2023-12-28_-_1.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2023-12-28T14:24:48"^^xsd:dateTime ;
+    doc:Document.tag data:tag_gratteCiel, data:tag_streetView, data:tag_villeurbanne ;
+    dct:creator "Chabe01" ;
+    dct:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    doc:Document.referringTo data:reference_8 .
+
+data:reference_8 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-12T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_2023_12_28 ;
+    doc:Reference.purposeType      data:purposeType_streetView ;
+    doc:Reference.referenceText    "Tours de Gratte Ciel, avenue Henri Barbusse, Villeurbanne." ;
+    doc:Reference.referringTo      data:GratteCielDistrict .
+
+# ════════════════════════════════════════════════════════════════════════════
+# THE TOWN HALL: periods depicted or described
+# ════════════════════════════════════════════════════════════════════════════
+
+# Dating of the town hall in its Mérimée record: 1930, inaugurated in 1934
+data:interval_1930_1934 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_1930 ;
+    time:hasEnd       data:instant_1934 .
+
+data:instant_1934 a owl:NamedIndividual, time:Instant ;
+    time:inXSDgYear "1934"^^xsd:gYear .
+
+# "vers 1930": the corridor photograph, dated approximately by its library
+data:interval_circa_1930 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_1930 ;
+    time:hasEnd       data:instant_1930 .
+
+# Listing as a historic monument (inscription), 29 April 1991
+data:interval_1991_04_29 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_1991_04_29 ;
+    time:hasEnd       data:instant_1991_04_29 .
+
+data:instant_1991_04_29 a owl:NamedIndividual, time:Instant ;
+    time:inXSDDate "1991-04-29"^^xsd:date .
+
+data:interval_2008_05_21 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_2008_05_21 ;
+    time:hasEnd       data:instant_2008_05_21 .
+
+data:instant_2008_05_21 a owl:NamedIndividual, time:Instant ;
+    time:inXSDDate "2008-05-21"^^xsd:date .
+
+data:interval_2013_05_12 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_2013_05_12 ;
+    time:hasEnd       data:instant_2013_05_12 .
+
+data:instant_2013_05_12 a owl:NamedIndividual, time:Instant ;
+    time:inXSDDate "2013-05-12"^^xsd:date .
+
+data:interval_2020_06_01 a owl:NamedIndividual, time:Interval ;
+    time:hasBeginning data:instant_2020_06_01 ;
+    time:hasEnd       data:instant_2020_06_01 .
+
+data:instant_2020_06_01 a owl:NamedIndividual, time:Instant ;
+    time:inXSDDate "2020-06-01"^^xsd:date .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 5: heritage record of the town hall (Mérimée PA00118150, historic
+#     monument, partially listed on 29 April 1991; online since 1993-12-03)
+#
+# Three references at two scales: the building, dated by the record, and
+#     its façades and roofs, the protected parts that the LoD2 wall and roof
+#     surfaces represent.
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_5 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Hôtel de ville"@fr ;
+    doc:Document.uri "https://pop.culture.gouv.fr/notice/merimee/PA00118150"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "1993-12-03T00:00:00"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_heritage, data:tag_villeurbanne ;
+    dct:publisher "Ministère de la Culture (POP, base Mérimée)" ;
+    rdfs:comment "Record PA00118150 of the Mérimée database: town hall by Robert Giroud, dated 1930, inaugurated in 1934, part of the Cité des Gratte-ciel; façades and roofs, main staircase, halls and corridors of the first and second floors, wedding hall and a fireplace listed as a historic monument on 29 April 1991. Creation date: date the record was put online."@en ;
+    doc:Document.referringTo data:reference_9 , data:reference_10 , data:reference_11 .
+
+data:reference_9 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1930_1934 ;
+    doc:Reference.purposeType      data:purposeType_heritageRecord ;
+    doc:Reference.referenceText    "Hôtel de ville, architecte Robert Giroud, daté 1930, inauguré en 1934" ;
+    doc:Reference.referringTo      data:BU_69266BO55_0 .
+
+data:reference_10 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1991_04_29 ;
+    doc:Reference.purposeType      data:purposeType_heritageRecord ;
+    doc:Reference.referenceText    "Façades : inscription au titre des monuments historiques par arrêté du 29 avril 1991" ;
+    doc:Reference.referringTo      data:WallSurface_60 .
+
+data:reference_11 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_1991_04_29 ;
+    doc:Reference.purposeType      data:purposeType_heritageRecord ;
+    doc:Reference.referenceText    "Toitures : inscription au titre des monuments historiques par arrêté du 29 avril 1991" ;
+    doc:Reference.referringTo      data:RoofSurface_60 .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 6: elevation drawing of the town hall's north façade
+#     (Florian Faivre-Malfroy, 2013; Wikimedia Commons, CC BY-SA 3.0)
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_6 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Plan façade Nord de l'hôtel de ville de Villeurbanne"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/9/9b/Plan_fa%C3%A7ade_Nord_de_l%27h%C3%B4tel_de_ville_de_Villeurbanne.png"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:Plan_fa%C3%A7ade_Nord_de_l%27h%C3%B4tel_de_ville_de_Villeurbanne.png"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2013-05-12T20:23:01"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_architecturalDrawing, data:tag_villeurbanne ;
+    dct:creator "Florian Faivre-Malfroy" ;
+    dct:license <https://creativecommons.org/licenses/by-sa/3.0/> ;
+    doc:Document.referringTo data:reference_12 .
+
+data:reference_12 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_2013_05_12 ;
+    doc:Reference.purposeType      data:purposeType_architecturalDrawing ;
+    doc:Reference.referenceText    "Plan façade Nord de l'hôtel de ville de Villeurbanne" ;
+    doc:Reference.referringTo      data:WallSurface_60 .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENT 7: a corridor of the town hall, "vers 1930" (Jules Sylvestre)
+#
+# Three states (prov:wasRevisionOf): the photograph → its Numelyo record
+#     (BML_01ICO001014cd15f98f225d) → its copy on Wikimedia Commons (2022).
+# The library dates it "vers 1930", but the town hall was inaugurated in
+#     1934: the depicted period is uncertain, recorded on the reference with
+#     rico:relationCertainty.
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_7_original a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "L'Hôtel de ville de Villeurbanne, couloir"@fr ;
+    core:AbstractFeatureWithLifespan.creationDate "1930-01-01T00:00:00"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_interior, data:tag_villeurbanne ;
+    dct:creator "Jules Sylvestre" ;
+    rdfs:comment "Original photograph, dated \"vers 1930\" (circa) by the Bibliothèque municipale de Lyon. Year only."@en .
+
+data:document_7_numelyo a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "L'Hôtel de ville de Villeurbanne, couloir"@fr ;
+    doc:Document.uri "https://numelyo.bm-lyon.fr/BML:BML_01ICO001014cd15f98f225d"^^xsd:anyURI ;
+    doc:Document.tag data:tag_townHall, data:tag_interior, data:tag_villeurbanne ;
+    prov:wasRevisionOf data:document_7_original ;
+    dct:creator "Jules Sylvestre" ;
+    dct:publisher "Bibliothèque municipale de Lyon (Numelyo)" ;
+    rdfs:comment "Digitised photograph in Numelyo, the digital library of the Bibliothèque municipale de Lyon; digitisation date not given by the source."@en .
+
+data:document_7 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "L'Hôtel de ville de Villeurbanne, couloir"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/9/9e/L%27H%C3%B4tel_de_ville_de_Villeurbanne%2C_couloir.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:L%27H%C3%B4tel_de_ville_de_Villeurbanne,_couloir.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2022-07-28T09:12:53"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_interior, data:tag_villeurbanne ;
+    prov:wasRevisionOf data:document_7_numelyo ;
+    dct:creator "Jules Sylvestre" ;
+    dct:license <https://creativecommons.org/publicdomain/mark/1.0/> ;
+    rdfs:comment "Copy on Wikimedia Commons of the Numelyo record; creation date of the upload."@en ;
+    doc:Document.referringTo data:reference_13 .
+
+data:reference_13 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_circa_1930 ;
+    doc:Reference.purposeType      data:purposeType_interiorView ;
+    doc:Reference.referenceText    "Villeurbanne town hall, corridor leading to the technical department, ground floor (vers 1930)" ;
+    rico:relationCertainty         "uncertain" ;
+    rdfs:comment "The library dates the photograph vers 1930; the town hall was inaugurated in 1934 (Mérimée PA00118150)."@en ;
+    doc:Reference.referringTo      data:BU_69266BO55_0 .
+
+# ════════════════════════════════════════════════════════════════════════════
+# DOCUMENTS 8–10: photographs of the town hall, 2008–2023 (Wikimedia Commons)
+# ════════════════════════════════════════════════════════════════════════════
+
+data:document_8 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Hôtel de ville de Villeurbanne façade sud"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/e/eb/H%C3%B4tel_de_ville_de_Villeurbanne_fa%C3%A7ade_sud.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:H%C3%B4tel_de_ville_de_Villeurbanne_fa%C3%A7ade_sud.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2020-06-01T15:24:26"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_streetView, data:tag_villeurbanne ;
+    dct:creator "CHABERT Louis" ;
+    dct:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    doc:Document.referringTo data:reference_14 .
+
+data:reference_14 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_2020_06_01 ;
+    doc:Reference.purposeType      data:purposeType_streetView ;
+    doc:Reference.referenceText    "hôtel de ville de Villeurbanne façade sud" ;
+    doc:Reference.referringTo      data:WallSurface_60 .
+
+data:document_9 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Hôtel de Ville Place Liberation PA00118150"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/e/e5/H%C3%B4tel_de_Ville_Place_Liberation_PA00118150.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:H%C3%B4tel_de_Ville_Place_Liberation_PA00118150.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2008-05-21T00:00:00"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_streetView, data:tag_villeurbanne ;
+    dct:creator "Alexmar983" ;
+    dct:license <https://creativecommons.org/licenses/by-sa/3.0/> ;
+    doc:Document.referringTo data:reference_15 .
+
+data:reference_15 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_2008_05_21 ;
+    doc:Reference.purposeType      data:purposeType_streetView ;
+    doc:Reference.referenceText    "Hôtel de Ville de Villeurbanne (Place Libération)" ;
+    doc:Reference.referringTo      data:BU_69266BO55_0 .
+
+data:document_10 a owl:NamedIndividual, doc:Document ;
+    doc:Document.title "Hôtel Ville - Villeurbanne (FR69) - 2023-12-28 - 2"@fr ;
+    doc:Document.uri
+        "https://upload.wikimedia.org/wikipedia/commons/6/6c/H%C3%B4tel_Ville_-_Villeurbanne_%28FR69%29_-_2023-12-28_-_2.jpg"^^xsd:anyURI ;
+    rdfs:seeAlso
+        "https://commons.wikimedia.org/wiki/File:H%C3%B4tel_Ville_-_Villeurbanne_(FR69)_-_2023-12-28_-_2.jpg"^^xsd:anyURI ;
+    core:AbstractFeatureWithLifespan.creationDate "2023-12-28T14:27:47"^^xsd:dateTime ;
+    doc:Document.tag data:tag_townHall, data:tag_streetView, data:tag_villeurbanne ;
+    dct:creator "Chabe01" ;
+    dct:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
+    doc:Document.referringTo data:reference_16 .
+
+data:reference_16 a owl:NamedIndividual, doc:Reference ;
+    doc:Reference.referringDate    "2026-10-13T00:00:00"^^xsd:dateTime ;
+    doc:Reference.coveragePeriod   data:interval_2023_12_28 ;
+    doc:Reference.purposeType      data:purposeType_streetView ;
+    doc:Reference.referenceText    "Hôtel de ville de Villeurbanne." ;
+    doc:Reference.referringTo      data:BU_69266BO55_0 .
