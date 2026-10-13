@@ -4,7 +4,7 @@
 @prefix con: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/construction#> .
 @prefix core: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core#> .
 @prefix dem: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/relief#> .
-@prefix doc: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/document#> .
+@prefix doc: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#> .
 @prefix dyn: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/dynamizer#> .
 @prefix frn: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/cityfurniture#> .
 @prefix gen: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/generics#> .
@@ -23,7 +23,7 @@
 @prefix tran: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/transportation#> .
 @prefix tun: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/tunnel#> .
 @prefix veg: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/vegetation#> .
-@prefix wksp: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/workspace#> .
+@prefix wksp: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Workspace/3.0/workspace#> .
 @prefix wtr: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/waterbody#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -254,7 +254,7 @@ core:CityModel.cityModelMember_appearanceMember a owl:ObjectProperty ;
     rdfs:label "cityModelMember.appearanceMember"@en ;
     rdfs:domain core:CityModel ;
     rdfs:range core:AbstractAppearance ;
-    rdfs:subPropertyOf core:cityModelMember ;
+    rdfs:subPropertyOf core:CityModel.cityModelMember ;
     skos:definition "Specifies the appearances of the CityModel."@en ;
     skos:prefLabel "appearanceMember"@en .
 
@@ -262,7 +262,7 @@ core:CityModel.cityModelMember_cityObjectMember a owl:ObjectProperty ;
     rdfs:label "cityModelMember.cityObjectMember"@en ;
     rdfs:domain core:CityModel ;
     rdfs:range core:AbstractCityObject ;
-    rdfs:subPropertyOf core:cityModelMember ;
+    rdfs:subPropertyOf core:CityModel.cityModelMember ;
     skos:definition "Specifies the city objects that are part of the CityModel."@en ;
     skos:prefLabel "cityObjectMember"@en .
 
@@ -270,7 +270,7 @@ core:CityModel.cityModelMember_featureMember a owl:ObjectProperty ;
     rdfs:label "cityModelMember.featureMember"@en ;
     rdfs:domain core:CityModel ;
     rdfs:range core:AbstractFeature ;
-    rdfs:subPropertyOf core:cityModelMember ;
+    rdfs:subPropertyOf core:CityModel.cityModelMember ;
     skos:definition "Specifies the feature objects that are part of the CityModel. It allows to include objects that are not derived from a class defined in the CityGML conceptual model, but from the ISO 19109 class AnyFeature."@en ;
     skos:prefLabel "featureMember"@en .
 
@@ -278,7 +278,7 @@ core:CityModel.cityModelMember_versionMember a owl:ObjectProperty ;
     rdfs:label "cityModelMember.versionMember"@en ;
     rdfs:domain core:CityModel ;
     rdfs:range core:AbstractVersion ;
-    rdfs:subPropertyOf core:cityModelMember ;
+    rdfs:subPropertyOf core:CityModel.cityModelMember ;
     skos:definition "Specifies the different versions of the CityModel."@en ;
     skos:prefLabel "versionMember"@en .
 
@@ -286,7 +286,7 @@ core:CityModel.cityModelMember_versionTransitionMember a owl:ObjectProperty ;
     rdfs:label "cityModelMember.versionTransitionMember"@en ;
     rdfs:domain core:CityModel ;
     rdfs:range core:AbstractVersionTransition ;
-    rdfs:subPropertyOf core:cityModelMember ;
+    rdfs:subPropertyOf core:CityModel.cityModelMember ;
     skos:definition "Specifies the transitions between the different versions of the CityModel."@en ;
     skos:prefLabel "versionTransitionMember"@en .
 

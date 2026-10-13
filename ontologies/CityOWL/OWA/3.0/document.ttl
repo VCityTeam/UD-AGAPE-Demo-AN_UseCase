@@ -2,6 +2,7 @@
 @prefix doc: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -10,6 +11,11 @@
     owl:imports <http://def.isotc211.org/iso19150/-2/2012/base>,
         <http://www.w3.org/2006/time>,
         <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/OWA/3.0/core> .
+
+doc:Document.referringTo a owl:ObjectProperty ;
+    rdfs:label "referringTo"@en ;
+    rdfs:domain doc:Document ;
+    rdfs:range doc:Reference .
 
 doc:Document.tag a owl:ObjectProperty ;
     rdfs:label "tag"@en ;
@@ -52,6 +58,11 @@ doc:Reference.referenceText a owl:DatatypeProperty ;
     rdfs:domain doc:Reference ;
     rdfs:range xsd:string .
 
+doc:Reference.referringTo a owl:ObjectProperty ;
+    rdfs:label "referringTo"@en ;
+    rdfs:domain doc:Reference ;
+    rdfs:range core:AbstractFeatureWithLifespan .
+
 doc:Reference.referringDate a owl:DatatypeProperty ;
     rdfs:label "referringDate"@en ;
     rdfs:domain doc:Reference ;
@@ -70,6 +81,10 @@ doc:Tag.text a owl:DatatypeProperty ;
 doc:Document a owl:Class ;
     rdfs:label "Document"@en ;
     rdfs:subClassOf core:AbstractFeatureWithLifespan .
+
+doc:PurposeTypeValue a owl:Class ;
+    rdfs:label "PurposeTypeValue"@en ;
+    rdfs:subClassOf skos:Concept .
 
 doc:Tag a owl:Class ;
     rdfs:label "Tag"@en .

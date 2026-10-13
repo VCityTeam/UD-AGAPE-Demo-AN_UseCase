@@ -537,6 +537,10 @@ tran:SquareFunctionValue a owl:Class ;
     rdfs:label "SquareFunctionValue"@en ;
     rdfs:subClassOf skos:Concept .
 
+tran:SquareUsageValue a owl:Class ;
+    rdfs:label "SquareUsageValue"@en ;
+    rdfs:subClassOf skos:Concept .
+
 tran:Track.class a owl:ObjectProperty ;
     rdfs:label "class"@en ;
     rdfs:domain tran:Track ;

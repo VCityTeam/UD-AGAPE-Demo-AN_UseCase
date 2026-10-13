@@ -12,6 +12,12 @@
         <http://www.w3.org/2006/time>,
         <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core> .
 
+doc:DocumentableVersion a owl:Class ;
+    rdfs:label "DocumentableVersion"@en .
+
+doc:DocumentableVersionTransition a owl:Class ;
+    rdfs:label "DocumentableVersionTransition"@en .
+
 doc:Document.referringTo a owl:ObjectProperty ;
     rdfs:label "referringTo"@en ;
     rdfs:domain doc:Document ;

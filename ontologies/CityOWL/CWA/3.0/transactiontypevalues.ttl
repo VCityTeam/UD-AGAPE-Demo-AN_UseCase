@@ -7,7 +7,7 @@
 <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/type> a owl:Ontology ;
     rdfs:label "Type"@en ;
     owl:imports <http://www.w3.org/2004/02/skos/core>,
-        <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/versioning>
+        <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/versioning> ;
     skos:definition "An ontology containing the default values, schemes, and collections for the CityGML 3.0 transactionType concept."@en .
 
 
@@ -18,19 +18,19 @@ type:transactionTypeScheme a    skos:ConceptScheme,
 type:insert a   vers:TransactionTypeValue,
                 owl:NamedIndividual ;
     rdfs:label       "insert"@en ;
-    skos:inScheme    vers:transactionTypeScheme ;
+    skos:inScheme    type:transactionTypeScheme ;
     skos:definition  "A new feature is added to the version."@en .
 
 type:delete a   vers:TransactionTypeValue,
                 owl:NamedIndividual ;
     rdfs:label       "delete"@en ;
-    skos:inScheme    vers:transactionTypeScheme ;
+    skos:inScheme    type:transactionTypeScheme ;
     skos:definition  "An old feature is removed from the version."@en .
 
 type:replace a  vers:TransactionTypeValue,
                 owl:NamedIndividual ;
     rdfs:label       "replace"@en ;
-    skos:inScheme    vers:transactionTypeScheme ;
+    skos:inScheme    type:transactionTypeScheme ;
     skos:definition  "An old feature is replaced with a new feature between versions."@en .
 
 type:defaultTransactionTypes a  skos:Collection,
