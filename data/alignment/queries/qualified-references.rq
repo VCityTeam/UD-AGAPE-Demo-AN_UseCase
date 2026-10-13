@@ -1,0 +1,25 @@
+# The DocGraph case-study query expressed in RiC-O: for each record, the
+#     document state that asserts each reference, the referenced feature,
+#     the purpose, the depicted period and the assertion date (dual timeline).
+
+PREFIX rico:  <https://www.ica.org/standards/RiC/ontology#>
+PREFIX align: <https://raw.githubusercontent.com/VCityTeam/UD-AGAPE-Demo-AN_UseCase/master/data/alignment/citygml3-rico.ttl#>
+
+SELECT ?record ?state ?feature ?purpose ?depicted ?asserted
+WHERE {
+  ?state rico:isOrWasInstantiationOf ?record ;
+         rico:thingIsSourceOfRelation ?relation .
+  ?relation rico:relationHasTarget ?feature .
+  OPTIONAL { ?relation rico:hasOrHadType ?purpose }
+  OPTIONAL {
+    ?relation rico:relationHasDate ?c .
+    ?c rico:hasDateType align:dateType_coveragePeriod ;
+       rico:normalizedDateValue ?depicted .
+  }
+  OPTIONAL {
+    ?relation rico:relationHasDate ?a .
+    ?a rico:hasDateType align:dateType_assertion ;
+       rico:normalizedDateValue ?asserted .
+  }
+}
+ORDER BY ?record ?asserted ?feature

@@ -1,0 +1,37 @@
+# Documents and their 3D geometry: for each record, the buildings it refers
+#     to, directly, through one of their surfaces (e.g. façades), or through
+#     the place a reference target is located at (district-level references),
+#     with their LoD2 surfaces as GML. ?via gives the scale of the reference.
+# Load gratteciel-geometry.ttl with the aligned data.
+
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX bldg: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building#>
+PREFIX core: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/core#>
+PREFIX geo:  <http://www.opengis.net/ont/geosparql#>
+
+SELECT DISTINCT ?record ?title ?building ?via ?surface ?gml
+WHERE {
+  ?record a rico:Record ;
+          rico:title ?title ;
+          rico:hasOrHadInstantiation/rico:thingIsSourceOfRelation/rico:relationHasTarget ?target .
+  {
+    ?target a bldg:Building .
+    BIND(?target AS ?building)
+    BIND("building" AS ?via)
+  } UNION {
+    ?building a bldg:Building ;
+              core:AbstractSpace.boundary ?target .
+    BIND("surface" AS ?via)
+  } UNION {
+    ?target rico:hasOrHadLocation ?place .
+    FILTER NOT EXISTS { ?target a bldg:Building }
+    FILTER NOT EXISTS { ?anyBuilding core:AbstractSpace.boundary ?target }
+    ?building a bldg:Building ;
+              rico:hasOrHadLocation ?place .
+    FILTER(?building != ?target)
+    BIND("place" AS ?via)
+  }
+  ?building core:AbstractSpace.boundary ?surface .
+  ?surface core:AbstractThematicSurface.lod2MultiSurface/geo:asGML ?gml .
+}
+ORDER BY ?record ?building ?surface

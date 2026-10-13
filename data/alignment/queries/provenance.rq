@@ -1,0 +1,22 @@
+# PROV-O view: how each document state was produced, and when and by whom
+#     each of its references was asserted (attribution is empty until agents
+#     are recorded, see README).
+
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX doc:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#>
+
+SELECT ?state ?activity ?usedState ?producedAt ?reference ?assertedAt ?assertedBy
+WHERE {
+  ?state a doc:Document .
+  OPTIONAL {
+    ?state prov:wasGeneratedBy ?activity .
+    ?activity prov:used ?usedState .
+    OPTIONAL { ?activity prov:endedAtTime ?producedAt }
+  }
+  OPTIONAL {
+    ?state doc:Document.referringTo ?reference .
+    OPTIONAL { ?reference prov:generatedAtTime ?assertedAt }
+    OPTIONAL { ?reference prov:wasAttributedTo ?assertedBy }
+  }
+}
+ORDER BY ?producedAt ?state ?assertedAt

@@ -1,0 +1,15 @@
+# The versions (instantiations) of each record, oldest first,
+#     with the instantiation each one was derived from.
+
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX doc:  <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/Document/3.0/document#>
+
+SELECT ?record ?instantiation ?created ?derivedFrom ?uri
+WHERE {
+  ?record a rico:Record ;
+          rico:hasOrHadInstantiation ?instantiation .
+  OPTIONAL { ?instantiation rico:creationDate ?created }
+  OPTIONAL { ?instantiation rico:isOrWasDerivedFromInstantiation ?derivedFrom }
+  OPTIONAL { ?instantiation doc:Document.uri ?uri }
+}
+ORDER BY ?record ?created

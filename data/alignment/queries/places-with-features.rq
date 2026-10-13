@@ -1,0 +1,18 @@
+# The place hierarchy, with coordinates and the CityGML features located at
+#     each place (e.g. to highlight them in the UD-Viz 3D view).
+
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX bldg: <https://dataset-dl.liris.cnrs.fr/rdf-owl-urban-data-ontologies/Ontologies/CityOWL/CWA/3.0/building#>
+
+SELECT ?place ?name ?parent ?lat ?lon ?building
+WHERE {
+  ?place a rico:Place .
+  OPTIONAL { ?place rico:hasOrHadPlaceName/rico:textualValue ?name }
+  OPTIONAL { ?place rico:isOrWasContainedBy ?parent }
+  OPTIONAL {
+    ?place rico:hasOrHadPhysicalLocation/rico:hasOrHadCoordinates ?c .
+    ?c rico:latitude ?lat ; rico:longitude ?lon .
+  }
+  OPTIONAL { ?building rico:hasOrHadLocation ?place ; a bldg:Building . }
+}
+ORDER BY ?parent ?place ?building

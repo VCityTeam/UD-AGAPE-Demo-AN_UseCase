@@ -1,0 +1,18 @@
+# All records about a place, including the places it contains,
+#     with the city objects each record refers to.
+
+PREFIX rico: <https://www.ica.org/standards/RiC/ontology#>
+PREFIX data: <https://raw.githubusercontent.com/VCityTeam/UD-Graph/master/Datasets/GratteCiel_2018_split_v3#>
+
+SELECT ?place ?record ?title ?cityObject
+WHERE {
+  data:place_gratteCiel rico:containsOrContained* ?place .
+  ?record a rico:Record ;
+          rico:hasOrHadSubject ?place .
+  OPTIONAL { ?record rico:title ?title }
+  OPTIONAL {
+    ?record rico:hasOrHadSubject ?cityObject .
+    ?cityObject rico:hasOrHadLocation ?place .
+  }
+}
+ORDER BY ?place ?record ?cityObject
