@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gratte-Ciel Documents 3D</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      --bg: #f6f7f9; --panel: #ffffff; --text: #1d2430; --muted: #5f6b7a; --border: #dde2e8;
+      --accent: #b4532a; --sky: #e9eef4; --ground: #dfe4e8; --context: #c9ced6; --edge: #3d4652;
+      --doc-1: #9ec3e6; --doc-2: #5b9bd5; --doc-3: #2f72b8; --doc-4: #1b4f8a; --selected: #e07a3f;
+      --surface: #b0359a; --place: #1f9e89;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #12161c; --panel: #1a2029; --text: #e6e9ee; --muted: #9aa5b3; --border: #2c3542;
+        --accent: #f0a073; --sky: #1b222c; --ground: #232b36; --context: #4a5361; --edge: #0d1015;
+        --doc-1: #5d86ad; --doc-2: #4b8fd0; --doc-3: #6aa8e6; --doc-4: #9cc8f2; --selected: #f08a4b;
+        --surface: #e06cc8; --place: #3cc4a9;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #12161c; --panel: #1a2029; --text: #e6e9ee; --muted: #9aa5b3; --border: #2c3542;
+      --accent: #f0a073; --sky: #1b222c; --ground: #232b36; --context: #4a5361; --edge: #0d1015;
+      --doc-1: #5d86ad; --doc-2: #4b8fd0; --doc-3: #6aa8e6; --doc-4: #9cc8f2; --selected: #f08a4b;
+        --surface: #e06cc8; --place: #3cc4a9;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      background: var(--bg); color: var(--text);
+      font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: grid; grid-template-rows: auto 1fr; grid-template-columns: 1fr 400px;
+      grid-template-areas: "bar bar" "scene panel";
+    }
+    header {
+      grid-area: bar; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+      padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--panel);
+    }
+    header h1 { font-size: 17px; margin: 0; }
+    header .muted { font-size: 13px; }
+    .time { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .time input[type="range"] { width: 220px; accent-color: var(--accent); }
+    .time output { min-width: 82px; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .time label { display: flex; gap: 6px; align-items: center; font-size: 14px; }
+    #scene { grid-area: scene; position: relative; overflow: hidden; min-height: 0; }
+    #scene canvas { display: block; }
+    .imagery { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+      max-width: calc(100% - 24px); padding: 8px 10px; border-radius: 8px; background: var(--panel); border: 1px solid var(--border); font-size: 13px; }
+    .imagery select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; }
+    #panel {
+      grid-area: panel; overflow-y: auto; padding: 16px; background: var(--panel);
+      border-left: 1px solid var(--border);
+    }
+    #panel h2 { font-size: 18px; margin: 0 0 4px; overflow-wrap: anywhere; }
+    .muted { color: var(--muted); }
+    .record { border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 14px; cursor: pointer; }
+    .record:hover { border-color: var(--muted); }
+    .record:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .record.focused { border: 2px solid var(--selected); padding: 11px; }
+    #panel section h4 { margin: 20px 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .refs li.scale-surface .target { color: var(--surface); font-weight: 600; }
+    .refs li.scale-building .target { color: var(--selected); font-weight: 600; }
+    .refs li.scale-place .target { color: var(--place); font-weight: 600; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+    .chip { font: inherit; font-size: 13px; cursor: pointer; color: var(--text); background: var(--bg);
+      border: 1.5px solid var(--place); border-radius: 999px; padding: 4px 12px; }
+    .chip:hover { background: var(--panel); }
+    .record img { width: 100%; height: 200px; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 10px; background: var(--bg); }
+    .record h3 { font-size: 15px; margin: 0 0 6px; }
+    a { color: var(--accent); }
+    .chain { font-size: 13px; margin: 6px 0; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+    .state { border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px; }
+    .arrow { color: var(--muted); }
+    .refs { list-style: none; padding: 0; margin: 8px 0 0; font-size: 13px; }
+    .refs li { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 6px 0; border-top: 1px dashed var(--border); }
+    .purpose { font-weight: 600; }
+    .certainty { border: 1px dashed var(--accent); border-radius: 4px; padding: 0 4px; font-size: 12px; }
+    .credit { font-size: 12px; margin: 8px 0 0; }
+    .empty { margin-top: 24px; }
+    .legend { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; }
+    .legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+    @media (max-width: 860px) {
+      body { grid-template-columns: 1fr; grid-template-rows: auto 55vh auto; grid-template-areas: "bar" "scene" "panel"; }
+      #panel { border-left: none; border-top: 1px solid var(--border); }
+      .time { margin-left: 0; width: 100%; }
+      .time input[type="range"] { flex: 1; width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Cité des Gratte-Ciel, Villeurbanne: documents in 3D</h1>
+      <div class="muted" id="summary"></div>
+    </div>
+    <div class="legend muted" aria-hidden="true">
+      Records per building
+      <i style="background: var(--doc-1)"></i>1
+      <i style="background: var(--doc-2)"></i>2
+      <i style="background: var(--doc-3)"></i>3
+      <i style="background: var(--doc-4)"></i>4+
+      <span aria-hidden="true">·</span> Highlight
+      <i style="background: var(--selected)"></i>building
+      <i style="background: var(--surface)"></i>surface
+      <i style="background: var(--place)"></i>place
+    </div>
+    <div class="time">
+      <label><input type="checkbox" id="all-periods" checked> All periods</label>
+      <input type="range" id="year" step="1" aria-label="Depicted year">
+      <output id="year-label" for="year"></output>
+    </div>
+  </header>
+  <div id="scene" aria-label="3D view of the Cité des Gratte-Ciel">
+    <div class="imagery">
+      <label>Imagery
+        <select id="imagery-mode">
+          <option value="auto">follows the year</option>
+          <option value="historical">1950–1965</option>
+          <option value="current">current</option>
+        </select>
+      </label>
+      <span id="imagery-label" class="muted"></span>
+      <span class="muted">© <a href="https://geoservices.ign.fr/" target="_blank" rel="noopener">IGN – Géoplateforme</a></span>
+    </div>
+  </div>
+  <aside id="panel" aria-live="polite"></aside>
+
+  <script src="scene.js"></script>
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.js",
+        "itowns": "https://cdn.jsdelivr.net/npm/itowns@2.46.0/dist/itowns.js"
+    } }
+  </script>
+  <script type="module">
+    import { start } from './viewer.js';
+    // window.viewer: the iTowns view, handy from the browser console
+    window.viewer = start(window.SCENE, {
+      container: document.getElementById('scene'),
+      imageryMode: document.getElementById('imagery-mode'),
+      imageryLabel: document.getElementById('imagery-label'),
+      panel: document.getElementById('panel'),
+      yearInput: document.getElementById('year'),
+      yearLabel: document.getElementById('year-label'),
+      allPeriods: document.getElementById('all-periods'),
+      summary: document.getElementById('summary'),
+    });
+  </script>
+</body>
+</html>
