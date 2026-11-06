@@ -48,6 +48,16 @@ Then open <http://localhost:8000>. The browser needs WebGL and network access: i
 * each place with the buildings located in it (`rico:hasOrHadLocation`) and an outline, the convex hull of their footprints;
 * each record with its states and references; each reference with its scale (`building`, `surface` or `place`), its target, the place it reaches, and the buildings it reaches.
 
+## Position geolocated photographs
+
+[`../../src/photo_coordinates.py`](../../src/photo_coordinates.py) transforms WGS 84 photograph coordinates into this viewer's local 3D coordinate frame (EPSG:3946 metres relative to `scene.js`'s origin). It accepts a JSON photo array, a `{ "photos": [...] }` object, or a GeoJSON `FeatureCollection`. Plain photo objects use `longitude`, `latitude`, and optional `altitude`; GeoJSON uses `Point` coordinates in the standard longitude, latitude, altitude order.
+
+```bash
+python3 src/photo_coordinates.py photos.geojson data/viewer/photos.json
+```
+
+Each output photo has a `position: [x, y, z]` ready for a three.js object inside the viewer's origin-positioned scene group. When altitude is absent, `z` is `0`, the viewer origin's elevation. Coordinates and malformed input are validated; no projection dependency is required.
+
 ## Test
 
 [`test/browser_check.py`](test/browser_check.py) serves this folder on a local port and drives the page in headless Chromium with software WebGL. It checks:
